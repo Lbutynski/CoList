@@ -1,11 +1,12 @@
 const express = require("express");
 const http = require("http");
-const { default: mongoose } = require("mongoose").set("debug", true);
+const { default: mongoose } = require("mongoose");
 const { Server } = require("socket.io");
 require("dotenv").config();
-const SERVER_PORT = 3001;
 const app = express();
+const SERVER_PORT = process.env.SERVER_PORT;
 const MONGO_URI = process.env.MONGO_URI;
+const SERVER_FRONT_ADDRESS = process.env.SERVER_FRONT_ADDRESS;
 (async () => {
   await mongoose.connect(MONGO_URI);
 })();
@@ -17,7 +18,7 @@ const ListItem = new mongoose.model("ListItem", listItemSchema);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: SERVER_FRONT_ADDRESS,
     methods: ["GET", "POST"],
     credentials: true,
   },

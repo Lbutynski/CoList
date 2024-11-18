@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
+
+const BACKEND_SERVER_URI = import.meta.env.VITE_BACKEND_SERVER_URI;
 const App = () => {
   const [list, setList] = useState([]);
   const socket = useRef(null);
   useEffect(() => {
-    socket.current = io("http://localhost:3001", { withCredentials: true });
+    socket.current = io(BACKEND_SERVER_URI, {
+      withCredentials: true,
+    });
     socket.current.on("updateList", (updatedList) => {
       setList(updatedList);
     });
