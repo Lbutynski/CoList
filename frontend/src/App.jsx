@@ -18,11 +18,24 @@ const App = () => {
     socket.current.emit("addItem", inputText.current.value);
     inputText.current.value = "";
   };
+  const handleDelete = (index) => {
+    socket.current.emit("removeItem", index);
+  };
+  const handleChange = (index, change) => {
+    socket.current.emit("changeItem", index, change);
+  };
   return (
     <>
       <ul>
         {list.map((item, index) => (
-          <li key={index}>{item}</li>
+          <li key={index}>
+            <input
+              type="text"
+              value={item}
+              onChange={(e) => handleChange(index, e.target.value)}
+            />
+            <button onClick={() => handleDelete(index)}>delete</button>
+          </li>
         ))}
       </ul>
       <input ref={inputText}></input>

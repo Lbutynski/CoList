@@ -26,8 +26,9 @@ io.on("connection", (socket) => {
     sharedList.splice(index, 1);
     io.emit("updateList", sharedList);
   });
-  socket.on("modifyItem", (index, change) => {
+  socket.on("changeItem", (index, change) => {
     sharedList[index] = change;
+    console.log(sharedList);
     io.emit("updateList", sharedList);
   });
   socket.on("disconnect", () => {
