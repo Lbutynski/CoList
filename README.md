@@ -1,6 +1,6 @@
-### CoList
+# CoList
 ## Install :
-# Backend
+### Backend
 ```
 git clone https://github.com/Lbutynski/CoList
 cd backend
@@ -16,7 +16,7 @@ Then :
 ```
 node server.js
 ```
-# Frontend
+### Frontend
 ```
 cd frontend
 npm i
