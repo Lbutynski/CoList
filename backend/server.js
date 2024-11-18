@@ -19,6 +19,7 @@ io.on("connection", (socket) => {
   socket.emit("updateList", sharedList);
 
   socket.on("addItem", (item) => {
+    console.log(item);
     sharedList.push(item);
     io.emit("updateList", sharedList);
   });
