@@ -8,10 +8,23 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
     credentials: true,
   },
+});
+const sharedList = ["test", "re"];
+io.on("connection", (socket) => {
+  console.log("Un utilisateur est connecté :", socket.id);
+  socket.emit("updateList", sharedList);
+
+  socket.on("addItem", (item) => {
+    sharedList.push(item);
+    io.emit("updateList", sharedList);
+  });
+  socket.on("disconnect", () => {
+    console.log("Un utilisateur est déconnecté");
+  });
 });
 
 server.listen(SERVER_PORT, () => {
