@@ -19,8 +19,15 @@ io.on("connection", (socket) => {
   socket.emit("updateList", sharedList);
 
   socket.on("addItem", (item) => {
-    console.log(item);
     sharedList.push(item);
+    io.emit("updateList", sharedList);
+  });
+  socket.on("removeItem", (index) => {
+    sharedList.splice(index, 1);
+    io.emit("updateList", sharedList);
+  });
+  socket.on("modifyItem", (index, change) => {
+    sharedList[index] = change;
     io.emit("updateList", sharedList);
   });
   socket.on("disconnect", () => {
