@@ -2,19 +2,24 @@ const express = require("express");
 const http = require("http");
 const { default: mongoose } = require("mongoose");
 const { Server } = require("socket.io");
+
 require("dotenv").config();
+
 const app = express();
 const SERVER_PORT = process.env.SERVER_PORT;
 const MONGO_URI = process.env.MONGO_URI;
 const SERVER_FRONT_ADDRESS = process.env.SERVER_FRONT_ADDRESS;
+
 (async () => {
   await mongoose.connect(MONGO_URI);
 })();
+
 const listItemSchema = new mongoose.Schema({
   name: { type: String, required: true },
   items: [String],
 });
 const ListItem = new mongoose.model("ListItem", listItemSchema);
+
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
@@ -23,11 +28,19 @@ const io = new Server(server, {
     credentials: true,
   },
 });
+
 const retrieveList = async (id) => {
   const list = await ListItem.findById(id);
-  return list ? list.items : [];
+  if (!list) {
+    list = await ListItem.create({
+      _id: id,
+      name: defaultName,
+      items: [],
+    });
+  }
+  return list;
 };
-const sharedList = ["test", "re"];
+
 io.on("connection", async (socket) => {
   console.log("Un utilisateur est connecté :", socket.id);
   const listId = "673b5242259d4a54b7caf04e";
