@@ -38,7 +38,7 @@ const retrieveList = async (id) => {
       items: [],
     });
   }
-  return list;
+  return list.items;
 };
 
 io.on("connection", async (socket) => {
